@@ -1,7 +1,7 @@
 # API URLs
 
 Task:
-- RESTFull API without any libraries
+RESTFull API without any libraries
 
 - http:://localhost/addresses GET Get addresses list
 - http:://localhost/addresses?fields=('LABEL','STREET','HOUSENUMBER','POSTALCODE','CITY','COUNTRY')
