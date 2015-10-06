@@ -4,20 +4,32 @@ namespace Api\Response;
 
 abstract class AbstractResponse
 {
-    const HTTP_STATUS_OK = 200;
-    const HTTP_STATUS_NOT_FOUND = 404;
+    /** @var int */
+    protected $status = HttpStatusCodesEnum::HTTP_STATUS_OK;
 
-    private $arrayData;
-    protected $status = self::HTTP_STATUS_OK;
+    /** @var array */
+    private $arrayData = [];
 
-
+    /**
+     * @return void
+     */
     abstract public function render();
 
+    /**
+     * @param array $data
+     *
+     * @return $this
+     */
     public function setArrayData(array $data)
     {
         $this->arrayData = $data;
+
+        return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getArrayData()
     {
         return $this->arrayData;
@@ -25,13 +37,21 @@ abstract class AbstractResponse
 
     /**
      * @param int $status
+     *
+     * @return $this
      */
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
-    protected  function throwStatus(){
+    /**
+     * @return void
+     */
+    protected  function throwStatus()
+    {
         http_response_code($this->status);
     }
 

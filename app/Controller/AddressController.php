@@ -6,16 +6,22 @@ use Api\Controller\AbstractController;
 use Api\Response\EmptyResponse;
 use Api\Response\JsonResponse;
 use Api\Model\AddressModel;
+use Api\Response\HttpStatusCodesEnum;
 
 class AddressController extends AbstractController
 {
+    /**
+     * @param int $id
+     * @return EmptyResponse|JsonResponse
+     */
     public function getByIdAction($id)
     {
         $address = (new AddressModel())->getById($id);
 
         if (empty($address)) {
             $response = new EmptyResponse();
-            $response->setStatus(404);
+            $response->setStatus(HttpStatusCodesEnum::HTTP_STATUS_NOT_FOUND);
+
             return $response;
         }
 
@@ -25,22 +31,45 @@ class AddressController extends AbstractController
         return $response;
     }
 
+    /**
+     * @param int $id
+     * @return EmptyResponse
+     */
     public function updateByIdAction($id)
     {
-        $data = [
-            'code' => 200
-        ];
+        $requestParams = json_decode($this->getRequest()->getRawData(), true);
 
-        $response = new JsonResponse();
-        $response->setArrayData($data);
+        if (JSON_ERROR_NONE != json_last_error()) {
+            $response = new EmptyResponse();
+            $response->setStatus(HttpStatusCodesEnum::HTTP_STATUS_BAD_REQUEST);
+
+            return $response;
+        }
+
+        $addressModel = new AddressModel();
+
+        $address = $addressModel->getById($id);
+
+        if (empty($address)) {
+            $response = new EmptyResponse();
+            $response->setStatus(HttpStatusCodesEnum::HTTP_STATUS_NOT_FOUND);
+
+            return $response;
+        }
+
+        $availableParams = ['LABEL', 'STREET', 'HOUSENUMBER', 'POSTALCODE', 'CITY', 'COUNTRY'];
+
+        $params = array_intersect_key($requestParams, array_flip($availableParams));
+
+        $addressModel->updateById((int)$id, $params);
+
+        $response = new EmptyResponse();
 
         return $response;
     }
 
     /**
-     * Get a list of addresses
-     *
-     * @return JsonResponse
+     * @return EmptyResponse|JsonResponse
      */
     public function listAction()
     {
@@ -48,24 +77,18 @@ class AddressController extends AbstractController
 
         $params = array_intersect_key($this->getRequest()->getGet(), array_flip($availableParams));
 
+        $list = (new AddressModel())->getList($params);
+
+        if (empty($list)) {
+            $response = new EmptyResponse();
+            $response->setStatus(HttpStatusCodesEnum::HTTP_STATUS_NOT_FOUND);
+
+            return $response;
+        }
+
         $response = new JsonResponse();
-        $response->setArrayData((new AddressModel())->getList($params));
+        $response->setArrayData($list);
 
         return $response;
-    }
-
-    public function createAction()
-    {
-        // create new address
-    }
-
-    public function updateAction()
-    {
-        // update addresses
-    }
-
-    public function deleteAction()
-    {
-        // delete addresses
     }
 }

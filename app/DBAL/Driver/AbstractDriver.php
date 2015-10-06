@@ -23,7 +23,9 @@ abstract class AbstractDriver implements DriverInterface
     abstract public function execute(QueryInterface $query);
 
     /**
-     * @param mixed $database
+     * @param string $database
+     *
+     * @return $this
      */
     public function setDatabase($database)
     {
@@ -33,7 +35,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDatabase()
     {
@@ -41,7 +43,9 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param mixed $host
+     * @param string $host
+     *
+     * @return $this
      */
     public function setHost($host)
     {
@@ -51,7 +55,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getHost()
     {
@@ -59,7 +63,9 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
+     *
+     * @return $this
      */
     public function setPassword($password)
     {
@@ -69,7 +75,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPassword()
     {
@@ -77,7 +83,9 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @param mixed $user
+     * @param string $user
+     *
+     * @return $this
      */
     public function setUser($user)
     {
@@ -87,7 +95,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUser()
     {

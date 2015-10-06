@@ -6,35 +6,42 @@ use Api\DBAL\QueryInterface;
 
 class MysqlDriver extends AbstractDriver
 {
-
+    /**
+     * @param QueryInterface $query
+     *
+     * @return \PDOStatement
+     * @throws \PDOException
+     */
     public function execute(QueryInterface $query)
     {
+        /** @var \PDOStatement $statement */
         $statement = $this->connection->prepare($query->getQuery());
 
-        foreach($query->getParams() as $name => $value) {
-            $type = \PDO::PARAM_INT;
+        $statement->execute($query->getParams());
 
-            switch($value){
-                case is_string($value):
-                    $type = \PDO::PARAM_STR;
-            }
-
-            $statement->bindParam($name, $value, $type);
+        if ($statement->errorCode() != 0) {
+            throw new \PDOException(implode(',',$statement->errorInfo()));
         }
-
-        $statement->execute();
 
         return $statement;
     }
 
+    /**
+     * @param QueryInterface $query
+     *
+     * @return array
+     */
     public function fetchAll(QueryInterface $query)
     {
         $statement = $this->execute($query);
 
-        return $statement->fetchAll();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-
+    /**
+     * @return $this
+     * @throws \Exception|\PDOException
+     */
     public function connect()
     {
         try {
@@ -44,6 +51,7 @@ class MysqlDriver extends AbstractDriver
                 $this->getPassword()
             );
         } catch (\PDOException $e) {
+            // TODO: Log error
             throw $e;
         }
 

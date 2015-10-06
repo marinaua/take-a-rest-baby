@@ -1,24 +1,32 @@
 <?php
+
 namespace Api\DBAL;
 
-
-class Query implements QueryInterface{
-
+class Query implements QueryInterface
+{
+    /** @var array */
     private $params = [];
+
+    /** @var string */
     private $query;
 
-    public function __construct()
-    {
-//        $this->statement = new \PDOStatement();
-    }
-
-
+    /**
+     * @param string $query
+     *
+     * @return $this
+     */
     public function setQuery($query){
         $this->query = $query;
 
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @param int|string $value
+     *
+     * @return $this
+     */
     public function addParam($name, $value)
     {
         $this->params[$name] = $value;
@@ -35,15 +43,10 @@ class Query implements QueryInterface{
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getQuery()
     {
         return $this->query;
     }
-
-
-
-
-
 }

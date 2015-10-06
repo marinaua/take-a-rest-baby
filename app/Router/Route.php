@@ -4,13 +4,22 @@ namespace Api\Router;
 
 class Route implements RouteInterface
 {
+    /** @var string */
     private $requestMethod;
+
+    /** @var string */
     private $pattern;
+
+    /** @var string */
     private $controller;
+
+    /** @var string */
     private $action;
 
     /**
-     * @param mixed $requestMethod
+     * @param string $requestMethod
+     *
+     * @return $this
      */
     public function setRequestMethod($requestMethod)
     {
@@ -28,7 +37,9 @@ class Route implements RouteInterface
     }
 
     /**
-     * @param mixed $pattern
+     * @param string $pattern
+     *
+     * @return $this
      */
     public function setPattern($pattern)
     {
@@ -38,7 +49,7 @@ class Route implements RouteInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPattern()
     {
@@ -46,7 +57,9 @@ class Route implements RouteInterface
     }
 
     /**
-     * @param mixed $action
+     * @param string $action
+     *
+     * @return $this
      */
     public function setAction($action)
     {
@@ -56,7 +69,7 @@ class Route implements RouteInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAction()
     {
@@ -64,7 +77,9 @@ class Route implements RouteInterface
     }
 
     /**
-     * @param mixed $controller
+     * @param string $controller
+     *
+     * @return $this
      */
     public function setController($controller)
     {
@@ -74,7 +89,7 @@ class Route implements RouteInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getController()
     {

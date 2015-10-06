@@ -12,17 +12,24 @@ class Router
     /** @var  Route[] */
     private $routes;
 
+    /**
+     * @param RouteInterface $route
+     */
     public function addRoute(RouteInterface $route)
     {
         $this->routes[] = $route;
     }
 
-
+    /**
+     * @param Request $request
+     *
+     * @return null|\stdClass
+     */
     public function getRoute(Request $request)
     {
         $result = null;
 
-        foreach($this->routes as $route) {
+        foreach ($this->routes as $route) {
             $matches = [];
 
             if (preg_match($this->preparePattern($route->getPattern()), $request->getRequestUri(), $matches)
@@ -32,6 +39,7 @@ class Router
                 $result->controller = $route->getController() . self::CONTROLLER_POSTFIX;
                 $result->action = $route->getAction() . self::METHOD_POSTFIX;
                 $result->data = [];
+
                 if (count($matches) > 1) {
                     $result->data = array_slice($matches, 1);
                 }
@@ -51,13 +59,11 @@ class Router
         $this->routes = $routes;
     }
 
-    private function uriMatchesPattern($pattern, $uri)
-    {
-        preg_match($this->preparePattern($pattern), $uri, $matches);
-
-        return array_slice($matches, 1);
-    }
-
+    /**
+     * @param string $pattern
+     *
+     * @return string
+     */
     private function preparePattern($pattern)
     {
         return '/' . $pattern . '/';

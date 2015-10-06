@@ -6,10 +6,11 @@ use Api\Request\Request;
 
 class AbstractController
 {
+    /** @var  Request */
     private $request;
 
     /**
-     * @param mixed $request
+     * @param Request $request
      */
     public function setRequest($request)
     {
